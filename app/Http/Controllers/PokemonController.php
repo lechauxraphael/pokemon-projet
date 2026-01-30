@@ -12,3 +12,4 @@ class PokemonController extends Controller
         return view('pokemon.index', compact('pokemons'));
     }
 }
+

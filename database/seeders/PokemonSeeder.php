@@ -1,5 +1,8 @@
 <?php
 
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -7,7 +10,9 @@ class PokemonSeeder extends Seeder
 {
     public function run(): void
     {
-        $json = File::get(database_path('seeders/data/pokemon.json'));
+        $path = database_path('seeders/data/pokemon.json');
+
+        $json = File::get($path);
         $pokemons = json_decode($json, true);
 
         foreach ($pokemons as $pokemon) {

@@ -10,16 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('pokemon', function (Blueprint $table) {
-            $table->id();
-            $table->integer('pokedex_number');
-            $table->string('name');
-            $table->integer('generation');
-            $table->boolean('is_legendary');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('pokemon', function (Blueprint $table) {
+        $table->id();
+        $table->integer('pokedex_number');
+        $table->string('name');
+        $table->integer('generation');
+        $table->boolean('is_legendary');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.
