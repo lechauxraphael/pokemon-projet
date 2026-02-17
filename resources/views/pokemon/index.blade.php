@@ -211,6 +211,15 @@
 
 <div class="filters">
     <form method="GET" action="{{ route('pokemon') }}" class="filter-form" aria-label="Filtrer les Pokémon par type">
+        <!-- recherche par nom -->
+        <div style="display: flex; gap: 8px; margin-bottom: 12px; justify-content: center;">
+            <input type="text" name="search" placeholder="Chercher un Pokémon..." value="{{ request('search') }}" 
+                   style="padding: 10px 14px; border: 1px solid #e9ecef; border-radius: 999px; min-width: 200px; font-weight: 600;">
+            @if(request('search'))
+                <a href="{{ route('pokemon', ['type' => request('type')]) }}" class="btn btn-secondary" style="padding: 10px 14px;" role="button">Effacer</a>
+            @endif
+        </div>
+
         <label for="type-select" class="sr-only">Filtrer par type</label>
         <div class="filter-control">
             <div class="select-wrapper">
@@ -272,6 +281,29 @@
     </div>
 @endforeach
 </section>
+
+<!-- pagination -->
+<div style="display: flex; justify-content: center; gap: 8px; margin: 40px 0; flex-wrap: wrap;">
+    @if($pokemons->onFirstPage())
+        <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">← Précédent</span>
+    @else
+        <a href="{{ $pokemons->previousPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">← Précédent</a>
+    @endif
+
+    @foreach($pokemons->getUrlRange(1, $pokemons->lastPage()) as $page => $url)
+        @if($page == $pokemons->currentPage())
+            <span style="padding: 8px 12px; background: var(--primary); color: white; border-radius: 6px; font-weight: 600;">{{ $page }}</span>
+        @else
+            <a href="{{ $url }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">{{ $page }}</a>
+        @endif
+    @endforeach
+
+    @if($pokemons->hasMorePages())
+        <a href="{{ $pokemons->nextPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">Suivant →</a>
+    @else
+        <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">Suivant →</span>
+    @endif
+</div>
 
 <footer>
     Projet Pokédex — Laravel

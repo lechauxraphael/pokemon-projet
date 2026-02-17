@@ -8,7 +8,16 @@ class PokemonController extends Controller
 {
     public function index()
     {
+        // collect distinct types first (avant pagination)
+        $types = Pokemon::pluck('type1')
+            ->merge(Pokemon::pluck('type2'))
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values();
+
         $type = request('type');
+        $search = request('search');
 
         $query = Pokemon::orderBy('pokedex_number');
 
@@ -18,15 +27,12 @@ class PokemonController extends Controller
             });
         }
 
-        $pokemons = $query->get();
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
 
-        // collect distinct types from both columns
-        $types = Pokemon::pluck('type1')
-            ->merge(Pokemon::pluck('type2'))
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values();
+        // paginate 20 par page et appends les param de requête (type=...)
+        $pokemons = $query->paginate(30)->appends(request()->query());
 
         // French labels for common types (fallback to ucfirst)
         $typeLabels = [
