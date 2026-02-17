@@ -10,6 +10,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/pokemon', [PokemonController::class, 'index'])->middleware('auth');
+Route::get('/pokemon', [App\Http\Controllers\PokemonController::class, 'index'])->middleware('auth');
 
 

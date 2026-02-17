@@ -1,3 +1,6 @@
+@include('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -125,9 +128,8 @@
     </style>
 </head>
 <body>
-
 <header>
-    <h1>📖 Pokédex</h1>
+    <h1>Pokédex</h1>
     <p>Catalogue des Pokémon par génération</p>
 </header>
 
