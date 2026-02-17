@@ -282,19 +282,46 @@
 @endforeach
 </section>
 
-<!-- pagination -->
-<div style="display: flex; justify-content: center; gap: 8px; margin: 40px 0; flex-wrap: wrap;">
+<!-- pagination intelligente -->
+<div style="display: flex; justify-content: center; gap: 8px; margin: 40px 0; flex-wrap: wrap; align-items: center;">
     @if($pokemons->onFirstPage())
         <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">← Précédent</span>
     @else
         <a href="{{ $pokemons->previousPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">← Précédent</a>
     @endif
 
-    @foreach($pokemons->getUrlRange(1, $pokemons->lastPage()) as $page => $url)
-        @if($page == $pokemons->currentPage())
-            <span style="padding: 8px 12px; background: var(--primary); color: white; border-radius: 6px; font-weight: 600;">{{ $page }}</span>
-        @else
-            <a href="{{ $url }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">{{ $page }}</a>
+    @php
+        $currentPage = $pokemons->currentPage();
+        $lastPage = $pokemons->lastPage();
+        $startPages = [1, 2, 3, 4, 5];
+        $endPages = [$lastPage - 4, $lastPage - 3, $lastPage - 2, $lastPage - 1, $lastPage];
+        $endPages = array_filter($endPages, fn($p) => $p > 0);
+        $pagesShown = [];
+    @endphp
+
+    @foreach($startPages as $page)
+        @if($page <= $lastPage)
+            @php $pagesShown[] = $page; @endphp
+            @if($page == $currentPage)
+                <span style="padding: 8px 12px; background: var(--primary); color: white; border-radius: 6px; font-weight: 600;">{{ $page }}</span>
+            @else
+                <a href="{{ $pokemons->url($page) }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">{{ $page }}</a>
+            @endif
+        @endif
+    @endforeach
+
+    @if($lastPage > max($startPages) + 1 && min($endPages) > max($startPages) + 1)
+        <span style="padding: 8px 4px; color: #6c757d;">…</span>
+    @endif
+
+    @foreach($endPages as $page)
+        @if($page > max($startPages) && !in_array($page, $pagesShown))
+            @php $pagesShown[] = $page; @endphp
+            @if($page == $currentPage)
+                <span style="padding: 8px 12px; background: var(--primary); color: white; border-radius: 6px; font-weight: 600;">{{ $page }}</span>
+            @else
+                <a href="{{ $pokemons->url($page) }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">{{ $page }}</a>
+            @endif
         @endif
     @endforeach
 
