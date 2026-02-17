@@ -16,14 +16,19 @@ class PokemonSeeder extends Seeder
         $pokemons = json_decode($json, true);
 
         foreach ($pokemons as $pokemon) {
-            DB::table('pokemon')->insert([
-                'pokedex_number' => $pokemon['pokedex_number'],
-                'name' => $pokemon['name'],
-                'generation' => $pokemon['generation'],
-                'is_legendary' => $pokemon['is_legendary'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            DB::table('pokemon')->updateOrInsert(
+                ['pokedex_number' => $pokemon['pokedex_number']],
+                [
+                    'pokedex_number' => $pokemon['pokedex_number'],
+                    'name' => $pokemon['name'],
+                    'generation' => $pokemon['generation'],
+                    'is_legendary' => $pokemon['is_legendary'],
+                    'type1' => $pokemon['type1'] ?? null,
+                    'type2' => $pokemon['type2'] ?? null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
         }
     }
 }

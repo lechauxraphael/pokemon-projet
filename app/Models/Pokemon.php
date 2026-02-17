@@ -13,6 +13,8 @@ class Pokemon extends Model
         'name',
         'generation',
         'is_legendary',
+        'type1',
+        'type2',
     ];
 }
 
