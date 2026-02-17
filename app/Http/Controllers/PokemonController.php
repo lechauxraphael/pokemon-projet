@@ -31,10 +31,8 @@ class PokemonController extends Controller
             $query->where('name', 'like', '%' . $search . '%');
         }
 
-        // paginate 20 par page et appends les param de requête (type=...)
         $pokemons = $query->paginate(30)->appends(request()->query());
 
-        // French labels for common types (fallback to ucfirst)
         $typeLabels = [
             'normal' => 'Normal',
             'fire' => 'Feu',
