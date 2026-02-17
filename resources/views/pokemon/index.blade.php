@@ -206,25 +206,25 @@
 <body>
 <header>
     <h1>Pokédex</h1>
-    <p>Catalogue des Pokémon par génération</p>
+    <p>Pokémon catalog by generation</p>
 </header>
 
 <div class="filters">
     <form method="GET" action="{{ route('pokemon') }}" class="filter-form" aria-label="Filtrer les Pokémon par type">
-        <!-- recherche par nom -->
+        <!-- search by name -->
         <div style="display: flex; gap: 8px; margin-bottom: 12px; justify-content: center;">
-            <input type="text" name="search" placeholder="Chercher un Pokémon..." value="{{ request('search') }}" 
+            <input type="text" name="search" placeholder="Search a Pokémon..." value="{{ request('search') }}" 
                    style="padding: 10px 14px; border: 1px solid #e9ecef; border-radius: 999px; min-width: 200px; font-weight: 600;">
             @if(request('search'))
-                <a href="{{ route('pokemon', ['type' => request('type')]) }}" class="btn btn-secondary" style="padding: 10px 14px;" role="button">Effacer</a>
+                <a href="{{ route('pokemon', ['type' => request('type')]) }}" class="btn btn-secondary" style="padding: 10px 14px;" role="button">Clear</a>
             @endif
         </div>
 
-        <label for="type-select" class="sr-only">Filtrer par type</label>
+        <label for="type-select" class="sr-only">Filter by type</label>
         <div class="filter-control">
             <div class="select-wrapper">
                 <select name="type" id="type-select" aria-label="Type">
-                    <option value="" {{ request('type') ? '' : 'selected' }}>Tous les types</option>
+                    <option value="" {{ request('type') ? '' : 'selected' }}>All types</option>
                     @foreach(($types ?? []) as $t)
                         <option value="{{ $t }}" {{ request('type') == $t ? 'selected' : '' }}>
                             {{ $typeLabels[$t] ?? ucfirst($t) }}
@@ -233,8 +233,8 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Filtrer</button>
-            <a href="{{ route('pokemon') }}" class="btn btn-secondary" role="button">Réinitialiser</a>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ route('pokemon') }}" class="btn btn-secondary" role="button">Reset</a>
         </div>
     </form>
 </div>
@@ -271,23 +271,23 @@
             @endif
 
             <span class="badge generation">
-                Génération {{ $pokemon->generation }}
+                Generation {{ $pokemon->generation }}
             </span>
 
             <span class="badge {{ $pokemon->is_legendary ? 'legendary' : 'normal' }}">
-                {{ $pokemon->is_legendary ? 'Légendaire' : 'Normal' }}
+                {{ $pokemon->is_legendary ? 'Legendary' : 'Normal' }}
             </span>
         </div>
     </div>
 @endforeach
 </section>
 
-<!-- pagination intelligente -->
+<!-- smart pagination -->
 <div style="display: flex; justify-content: center; gap: 8px; margin: 40px 0; flex-wrap: wrap; align-items: center;">
     @if($pokemons->onFirstPage())
-        <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">← Précédent</span>
+        <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">← Previous</span>
     @else
-        <a href="{{ $pokemons->previousPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">← Précédent</a>
+        <a href="{{ $pokemons->previousPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">← Previous</a>
     @endif
 
     @php
@@ -326,14 +326,14 @@
     @endforeach
 
     @if($pokemons->hasMorePages())
-        <a href="{{ $pokemons->nextPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">Suivant →</a>
+        <a href="{{ $pokemons->nextPageUrl() }}" style="padding: 8px 12px; background: #f1f3f5; color: #495057; text-decoration: none; border-radius: 6px;">Next →</a>
     @else
-        <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">Suivant →</span>
+        <span style="padding: 8px 12px; background: #e9ecef; color: #6c757d; border-radius: 6px;">Next →</span>
     @endif
 </div>
 
 <footer>
-    Projet Pokédex — Laravel
+    Pokédex © {{ date('Y') }} - All rights reserved
 </footer>
 
 </body>
