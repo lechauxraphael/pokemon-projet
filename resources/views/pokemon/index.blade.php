@@ -211,6 +211,7 @@
 <header>
     <h1>Pokédex</h1>
     <p>Pokémon catalog by generation</p>
+    <p>Clic on the pokemon to see its details</p>
 </header>
 
 <div class="filters">

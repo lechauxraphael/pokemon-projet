@@ -34,6 +34,26 @@
             <h1 class="pokemon-title">{{ $pokemon->name }}</h1>
             <div class="pokemon-number">Number #{{ str_pad($pokemon->pokedex_number, 3, '0', STR_PAD_LEFT) }}</div>
 
+            <div class="deck-actions" style="margin:8px 0;">
+                @php $deckCount = count(session('deck', [])); @endphp
+                @if($deckCount >= 6)
+                    <a href="{{ route('deck') }}" class="btn btn-danger" style="margin-right:8px;">Deck Full (6)</a>
+                @else
+                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">View Deck ({{ $deckCount }})</a>
+                @endif
+                @if($inDeck)
+                    <form method="POST" action="{{ route('deck.remove', $pokemon->pokedex_number) }}" style="display:inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Remove from Deck</button>
+                    </form>
+                @else
+                    <form method="POST" action="{{ route('deck.add', $pokemon->pokedex_number) }}" style="display:inline">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Add to Deck</button>
+                    </form>
+                @endif
+            </div>
+
             <div class="pokemon-image-container">
                 @if($localFile)
                     <img src="{{ asset('images/' . $localFile) }}" alt="{{ $pokemon->name }}" class="pokemon-image">
