@@ -15,6 +15,13 @@ class Pokemon extends Model
         'is_legendary',
         'type1',
         'type2',
+        'hp',
+        'attack',
+        'defense',
+        'sp_attack',
+        'sp_defense',
+        'speed',
+        'weight_kg',
     ];
 }
 

@@ -245,7 +245,7 @@
 
 <section class="grid">
 @foreach($pokemons as $pokemon)
-    <a href="{{ route('pokemon.show', $pokemon->id) }}" style="text-decoration: none; color: inherit;">
+    <a href="{{ route('pokemon.show', $pokemon->pokedex_number) }}" style="text-decoration: none; color: inherit;">
     <div class="card">
         <div class="number">#{{ str_pad($pokemon->pokedex_number, 3, '0', STR_PAD_LEFT) }}</div>
 

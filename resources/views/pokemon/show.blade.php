@@ -110,7 +110,7 @@
         
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 16px;
         }
         
@@ -139,6 +139,55 @@
             color: #212529;
         }
         
+        .stats-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .stats-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: left;
+            color: #212529;
+        }
+        
+        .stat-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-label {
+            width: 120px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+        
+        .stat-bar-bg {
+            flex: 1;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .stat-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e63946 0%, #f77f88 100%);
+            border-radius: 12px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        
         @media (max-width: 768px) {
             .pokemon-card {
                 grid-template-columns: 1fr;
@@ -152,6 +201,11 @@
             
             .info-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-label {
+                width: 100px;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -211,6 +265,43 @@
                         <span class="info-item-label">Legendary : </span>
                         <span class="info-item-value">{{ $pokemon->is_legendary ? 'Yes' : 'No' }}</span>
                     </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Weight : </span>
+                        <span class="info-item-value">{{ $pokemon->weight_kg ?? 'N/A' }} kg</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Height : </span>
+                        <span class="info-item-value">-</span>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h2>Stats</h2>
+                    
+                    @php
+                        $stats = [
+                            ['name' => 'HP', 'value' => $pokemon->hp ?? 0],
+                            ['name' => 'Attack', 'value' => $pokemon->attack ?? 0],
+                            ['name' => 'Defense', 'value' => $pokemon->defense ?? 0],
+                            ['name' => 'Sp. Attack', 'value' => $pokemon->sp_attack ?? 0],
+                            ['name' => 'Sp. Defense', 'value' => $pokemon->sp_defense ?? 0],
+                            ['name' => 'Speed', 'value' => $pokemon->speed ?? 0],
+                        ];
+                    @endphp
+                    
+                    @foreach($stats as $stat)
+                        @php
+                            $percentage = min(($stat['value'] / 160) * 100, 100);
+                        @endphp
+                        <div class="stat-bar">
+                            <div class="stat-label">{{ $stat['name'] }}</div>
+                            <div class="stat-bar-bg">
+                                <div class="stat-bar-fill" style="width: {{ $percentage }}%;">
+                                    {{ $stat['value'] }}
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

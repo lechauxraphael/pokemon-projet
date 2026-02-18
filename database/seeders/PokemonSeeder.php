@@ -25,6 +25,13 @@ class PokemonSeeder extends Seeder
                     'is_legendary' => $pokemon['is_legendary'],
                     'type1' => $pokemon['type1'] ?? null,
                     'type2' => $pokemon['type2'] ?? null,
+                    'hp' => $pokemon['hp'] ?? null,
+                    'attack' => $pokemon['attack'] ?? null,
+                    'defense' => $pokemon['defense'] ?? null,
+                    'sp_attack' => $pokemon['sp_attack'] ?? null,
+                    'sp_defense' => $pokemon['sp_defense'] ?? null,
+                    'speed' => $pokemon['speed'] ?? null,
+                    'weight_kg' => $pokemon['weight_kg'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
