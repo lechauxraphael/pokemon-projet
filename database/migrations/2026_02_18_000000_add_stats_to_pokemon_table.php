@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('sp_defense')->nullable()->after('sp_attack');
             $table->integer('speed')->nullable()->after('sp_defense');
             $table->decimal('weight_kg', 5, 2)->nullable()->after('speed');
+            $table->decimal('height_m', 5, 2)->nullable()->after('weight_kg');
         });
     }
 

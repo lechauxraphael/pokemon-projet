@@ -32,6 +32,7 @@ class PokemonSeeder extends Seeder
                     'sp_defense' => $pokemon['sp_defense'] ?? null,
                     'speed' => $pokemon['speed'] ?? null,
                     'weight_kg' => $pokemon['weight_kg'] ?? null,
+                    'height_m' => $pokemon['height_m'] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

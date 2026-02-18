@@ -7,6 +7,7 @@
 @section('content')
         
     <div class="pokemon-page">
+        <h1 class="titlePage"> You're on the {{ $pokemon->name }} page</h1>
         <div class="pokemon-wrapper">
             <a href="{{ route('pokemon') }}" class="back-btn">← Back to Pokédex</a>
 
@@ -68,7 +69,7 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label">Height</span>
-                    <span class="info-value">-</span>
+                    <span class="info-value">{{ $pokemon->height_m ?? 'N/A' }} m</span>
                 </div>
             </div>
 

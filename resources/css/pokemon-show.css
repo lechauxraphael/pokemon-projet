@@ -17,11 +17,22 @@ main {
 
 .pokemon-page {
     display: flex !important;
-    justify-content: center !important;
+    flex-direction: column !important;
     align-items: center !important;
+    justify-content: flex-start !important;
     width: 100% !important;
     padding: 40px 20px !important;
     background: #f8f9fa !important;
+    min-height: calc(100vh - 80px);
+}
+
+.titlePage {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #212529;
+    margin-bottom: 30px;
+    text-align: center;
+    width: 100%;
 }
 
 .pokemon-wrapper {

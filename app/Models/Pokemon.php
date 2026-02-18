@@ -22,6 +22,7 @@ class Pokemon extends Model
         'sp_defense',
         'speed',
         'weight_kg',
+        'height_m',
     ];
 }
 
