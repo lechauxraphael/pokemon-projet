@@ -56,5 +56,15 @@ class PokemonController extends Controller
 
         return view('pokemon.index', compact('pokemons', 'types', 'typeLabels'));
     }
+
+    /**
+     * Display the detailed page for a single Pokemon.
+     */
+    public function show($id)
+    {
+        $pokemon = Pokemon::findOrFail($id);
+
+        return view('pokemon.show', compact('pokemon'));
+    }
 }
 

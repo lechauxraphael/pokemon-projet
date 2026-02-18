@@ -241,6 +241,7 @@
 
 <section class="grid">
 @foreach($pokemons as $pokemon)
+    <a href="{{ route('pokemon.show', $pokemon->id) }}" style="text-decoration: none; color: inherit;">
     <div class="card">
         <div class="number">#{{ str_pad($pokemon->pokedex_number, 3, '0', STR_PAD_LEFT) }}</div>
 
@@ -274,11 +275,14 @@
                 Generation {{ $pokemon->generation }}
             </span>
 
-            <span class="badge {{ $pokemon->is_legendary ? 'legendary' : 'normal' }}">
-                {{ $pokemon->is_legendary ? 'Legendary' : 'Normal' }}
-            </span>
+            @if($pokemon->is_legendary)
+                <span class="badge legendary">
+                    Legendary
+                </span>
+            @endif
         </div>
     </div>
+    </a>
 @endforeach
 </section>
 
@@ -333,7 +337,7 @@
 </div>
 
 <footer>
-    Pokédex © {{ date('Y') }} - All rights reserved
+    PokemonFactory © {{ date('Y') }} - All rights reserved
 </footer>
 
 </body>
