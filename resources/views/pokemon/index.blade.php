@@ -58,6 +58,9 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.08);
             transition: transform .2s ease, box-shadow .2s ease;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
         }
 
         .card:hover {
@@ -89,6 +92,7 @@
             justify-content: center;
             gap: 8px;
             flex-wrap: wrap;
+            margin-top: auto;
         }
 
         .badge {
@@ -271,9 +275,6 @@
                 <span class="badge type-badge">{{ ucfirst($pokemon->type2) }}</span>
             @endif
 
-            <span class="badge generation">
-                Generation {{ $pokemon->generation }}
-            </span>
 
             @if($pokemon->is_legendary)
                 <span class="badge legendary">
