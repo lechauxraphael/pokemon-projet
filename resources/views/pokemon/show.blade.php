@@ -65,11 +65,23 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label">Weight</span>
-                    <span class="info-value">{{ $pokemon->weight_kg ?? 'N/A' }} kg</span>
+                    <span class="info-value">
+                        @if(is_numeric($pokemon->weight_kg) && $pokemon->weight_kg > 0)
+                            {{ $pokemon->weight_kg }} kg
+                        @else
+                            N/A
+                        @endif
+                    </span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Height</span>
-                    <span class="info-value">{{ $pokemon->height_m ?? 'N/A' }} m</span>
+                    <span class="info-value">
+                        @if($pokemon->height_m > 0)
+                            {{ $pokemon->height_m }} m
+                        @else
+                            N/A
+                        @endif
+                    </span>
                 </div>
             </div>
 
@@ -78,24 +90,26 @@
 
                 @php
                     $stats = [
-                        ['name' => 'HP', 'value' => $pokemon->hp ?? 0],
-                        ['name' => 'Attack', 'value' => $pokemon->attack ?? 0],
-                        ['name' => 'Defense', 'value' => $pokemon->defense ?? 0],
-                        ['name' => 'Sp. Attack', 'value' => $pokemon->sp_attack ?? 0],
-                        ['name' => 'Sp. Defense', 'value' => $pokemon->sp_defense ?? 0],
-                        ['name' => 'Speed', 'value' => $pokemon->speed ?? 0],
+                        ['name' => 'HP', 'value' => $pokemon->hp ?? null],
+                        ['name' => 'Attack', 'value' => $pokemon->attack ?? null],
+                        ['name' => 'Defense', 'value' => $pokemon->defense ?? null],
+                        ['name' => 'Sp. Attack', 'value' => $pokemon->sp_attack ?? null],
+                        ['name' => 'Sp. Defense', 'value' => $pokemon->sp_defense ?? null],
+                        ['name' => 'Speed', 'value' => $pokemon->speed ?? null],
                     ];
                 @endphp
 
                 @foreach($stats as $stat)
                     @php
-                        $percentage = min(($stat['value'] / 160) * 100, 100);
+                        $val = $stat['value'];
+                        $has = is_numeric($val) && $val > 0;
+                        $percentage = $has ? min(($val / 160) * 100, 100) : 0;
                     @endphp
                     <div class="stat-item">
                         <div class="stat-name">{{ $stat['name'] }}</div>
                         <div class="stat-bar-container">
                             <div class="stat-bar-fill" style="width: {{ $percentage }}%;">
-                                {{ $stat['value'] }}
+                                {{ $has ? $val : 'N/A' }}
                             </div>
                         </div>
                     </div>
