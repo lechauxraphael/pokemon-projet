@@ -10,9 +10,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/pokemon', [App\Http\Controllers\PokemonController::class, 'index'])->middleware('auth')->name('pokemon');
-Route::get('/pokemon/{id}', [App\Http\Controllers\PokemonController::class, 'show'])->middleware('auth')->name('pokemon.show');
-Route::get('/home', function () {
-    return redirect()->route('pokemon');
-})->middleware(['auth', 'verified'])->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/pokemon', [App\Http\Controllers\PokemonController::class, 'index'])->name('pokemon');
+    Route::get('/pokemon/{pokedex_number}', [App\Http\Controllers\PokemonController::class, 'show'])->name('pokemon.show');
+    
+    Route::get('/home', function () {
+        return redirect()->route('pokemon');
+    })->name('home');
+});
 

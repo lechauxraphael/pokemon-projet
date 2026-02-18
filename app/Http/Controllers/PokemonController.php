@@ -60,9 +60,9 @@ class PokemonController extends Controller
     /**
      * Display the detailed page for a single Pokemon.
      */
-    public function show($id)
+    public function show($pokedex_number)
     {
-        $pokemon = Pokemon::where('pokedex_number', $id)->firstOrFail();
+        $pokemon = Pokemon::where('pokedex_number', $pokedex_number)->firstOrFail();
 
         $typeLabels = [
             'normal' => 'Normal',
