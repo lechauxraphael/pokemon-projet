@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pokemon;
+use App\Models\Deck;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PokemonController extends Controller
 {
@@ -64,6 +66,7 @@ class PokemonController extends Controller
     public function show($pokedex_number)
     {
         $pokemon = Pokemon::where('pokedex_number', $pokedex_number)->firstOrFail();
+        $decks = Deck::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
 
         $typeLabels = [
             'normal' => 'Normal',
@@ -86,8 +89,7 @@ class PokemonController extends Controller
             'fairy' => 'Fairy',
         ];
 
-        $inDeck = in_array($pokemon->pokedex_number, session('deck', []));
-        return view('pokemon.show', compact('pokemon', 'typeLabels', 'inDeck'));
+        return view('pokemon.show', compact('pokemon', 'typeLabels', 'decks'));
     }
 
     /**
@@ -97,7 +99,8 @@ class PokemonController extends Controller
     {
         $deck = session('deck', []);
         $pokemons = $deck ? Pokemon::whereIn('pokedex_number', $deck)->orderBy('pokedex_number')->get() : collect();
-        return view('pokemon.deck', compact('pokemons'));
+        $decks = Deck::where('user_id', Auth::id())->withCount('pokemons')->orderBy('created_at', 'desc')->get();
+        return view('pokemon.deck', compact('pokemons', 'decks'));
     }
 
     /**
@@ -129,5 +132,56 @@ class PokemonController extends Controller
         session(['deck' => $deck]);
         return redirect()->back()->with('status', 'Pokémon removed from your deck.');
     }
-}
 
+    public function storeDeck(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $deck = Deck::create([
+            'name' => $data['name'],
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('status', 'Deck créé.');
+    }
+
+    public function renameDeck(Request $request, Deck $deck)
+    {
+        if ($deck->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        $deck->update(['name' => $data['name']]);
+        return redirect()->back()->with('status', 'Nom du deck mis à jour.');
+    }
+
+    public function destroyDeck(Deck $deck)
+    {
+        if ($deck->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $deck->delete();
+        return redirect()->back()->with('status', 'Deck supprimé.');
+    }
+
+    public function addPokemonToSavedDeck(Request $request)
+    {
+        $data = $request->validate([
+            'deck_id' => 'required|integer|exists:decks,id',
+            'pokedex_number' => 'required|integer',
+        ]);
+
+        $deck = Deck::findOrFail($data['deck_id']);
+        if ($deck->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $pokemon = Pokemon::where('pokedex_number', $data['pokedex_number'])->firstOrFail();
+        $deck->pokemons()->syncWithoutDetaching([$pokemon->id]);
+
+        return redirect()->back()->with('status', 'Pokémon ajouté au deck.');
+    }
+}

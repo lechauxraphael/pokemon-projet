@@ -35,22 +35,20 @@
             <div class="pokemon-number">Number #{{ str_pad($pokemon->pokedex_number, 3, '0', STR_PAD_LEFT) }}</div>
 
             <div class="deck-actions" style="margin:8px 0;">
-                @php $deckCount = count(session('deck', [])); @endphp
-                @if($deckCount >= 6)
-                    <a href="{{ route('deck') }}" class="btn btn-danger" style="margin-right:8px;">Deck Full (6)</a>
+                @if(($decks ?? collect())->isEmpty())
+                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">Créer un deck</a>
                 @else
-                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">View Deck ({{ $deckCount }})</a>
-                @endif
-                @if($inDeck)
-                    <form method="POST" action="{{ route('deck.remove', $pokemon->pokedex_number) }}" style="display:inline">
+                    <form method="POST" action="{{ route('deck.add_pokemon') }}" style="display:inline-flex; gap:8px; align-items:center;">
                         @csrf
-                        <button type="submit" class="btn btn-danger">Remove from Deck</button>
+                        <input type="hidden" name="pokedex_number" value="{{ $pokemon->pokedex_number }}">
+                        <select name="deck_id" required style="padding:8px 10px; border:1px solid #e9ecef; border-radius:6px;">
+                            @foreach($decks as $d)
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary">Ajouter au deck</button>
                     </form>
-                @else
-                    <form method="POST" action="{{ route('deck.add', $pokemon->pokedex_number) }}" style="display:inline">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">Add to Deck</button>
-                    </form>
+                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-left:8px;">Voir mes decks</a>
                 @endif
             </div>
 
