@@ -99,7 +99,13 @@ class PokemonController extends Controller
     {
         $deck = session('deck', []);
         $pokemons = $deck ? Pokemon::whereIn('pokedex_number', $deck)->orderBy('pokedex_number')->get() : collect();
-        $decks = Deck::where('user_id', Auth::id())->withCount('pokemons')->orderBy('created_at', 'desc')->get();
+        $decks = Deck::where('user_id', Auth::id())
+            ->with(['pokemons' => function ($q) {
+                $q->orderBy('pokedex_number');
+            }])
+            ->withCount('pokemons')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('pokemon.deck', compact('pokemons', 'decks'));
     }
 

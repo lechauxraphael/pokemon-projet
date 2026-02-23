@@ -36,7 +36,7 @@
 
             <div class="deck-actions" style="margin:8px 0;">
                 @if(($decks ?? collect())->isEmpty())
-                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">Créer un deck</a>
+                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">Create Deck</a>
                 @else
                     <form method="POST" action="{{ route('deck.add_pokemon') }}" style="display:inline-flex; gap:8px; align-items:center;">
                         @csrf
@@ -46,9 +46,9 @@
                                 <option value="{{ $d->id }}">{{ $d->name }}</option>
                             @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary">Ajouter au deck</button>
+                        <button type="submit" class="btn btn-primary">Add to Deck</button>
                     </form>
-                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-left:8px;">Voir mes decks</a>
+                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-left:8px;">View My Decks</a>
                 @endif
             </div>
 
