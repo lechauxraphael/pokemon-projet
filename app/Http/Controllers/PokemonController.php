@@ -66,7 +66,10 @@ class PokemonController extends Controller
     public function show($pokedex_number)
     {
         $pokemon = Pokemon::where('pokedex_number', $pokedex_number)->firstOrFail();
-        $decks = Deck::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $decks = Deck::where('user_id', Auth::id())
+            ->withCount('pokemons')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $typeLabels = [
             'normal' => 'Normal',
@@ -150,7 +153,7 @@ class PokemonController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect()->back()->with('status', 'Deck créé.');
+        return redirect()->back()->with('status', 'Deck created.');
     }
 
     public function renameDeck(Request $request, Deck $deck)
@@ -162,7 +165,7 @@ class PokemonController extends Controller
             'name' => 'required|string|max:255',
         ]);
         $deck->update(['name' => $data['name']]);
-        return redirect()->back()->with('status', 'Nom du deck mis à jour.');
+        return redirect()->back()->with('status', 'Deck name updated.');
     }
 
     public function destroyDeck(Deck $deck)
@@ -171,7 +174,7 @@ class PokemonController extends Controller
             abort(403);
         }
         $deck->delete();
-        return redirect()->back()->with('status', 'Deck supprimé.');
+        return redirect()->back()->with('status', 'Deck deleted.');
     }
 
     public function addPokemonToSavedDeck(Request $request)
@@ -186,8 +189,12 @@ class PokemonController extends Controller
             abort(403);
         }
         $pokemon = Pokemon::where('pokedex_number', $data['pokedex_number'])->firstOrFail();
+        $currentCount = $deck->pokemons()->count();
+        if ($currentCount >= 6) {
+            return redirect()->back()->with('error', 'Deck is full (maximum 6 Pokémon).');
+        }
         $deck->pokemons()->syncWithoutDetaching([$pokemon->id]);
 
-        return redirect()->back()->with('status', 'Pokémon ajouté au deck.');
+        return redirect()->back()->with('status', 'Pokémon added to deck.');
     }
 }

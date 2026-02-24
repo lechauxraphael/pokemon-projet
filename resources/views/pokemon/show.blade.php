@@ -11,6 +11,13 @@
         <div class="pokemon-wrapper">
             <a href="{{ route('pokemon') }}" class="back-btn">← Back to Pokédex</a>
 
+            @if(session('status'))
+                <div class="alert alert-success" style="margin-top:12px">{{ session('status') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger" style="margin-top:12px">{{ session('error') }}</div>
+            @endif
+
             @php
                 $typeColors = [
                     'fire' => '#F08030', 'water' => '#6890F0', 'grass' => '#78C850', 'electric' => '#F8D030',
@@ -41,12 +48,14 @@
                     <form method="POST" action="{{ route('deck.add_pokemon') }}" style="display:inline-flex; gap:8px; align-items:center;">
                         @csrf
                         <input type="hidden" name="pokedex_number" value="{{ $pokemon->pokedex_number }}">
-                        <select name="deck_id" required style="padding:8px 10px; border:1px solid #e9ecef; border-radius:6px;">
+                        <select id="deck_select" name="deck_id" required style="padding:8px 10px; border:1px solid #e9ecef; border-radius:6px;">
                             @foreach($decks as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                                <option value="{{ $d->id }}" data-full="{{ $d->pokemons_count >= 6 ? 1 : 0 }}">
+                                    {{ $d->name }}{{ $d->pokemons_count >= 6 ? ' (full)' : '' }}
+                                </option>
                             @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary">Add to Deck</button>
+                        <button id="add_btn" type="submit" class="btn btn-primary">Add to Deck</button>
                     </form>
                     <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-left:8px;">View My Decks</a>
                 @endif
@@ -133,6 +142,29 @@
                     </div>
                 @endforeach
             </div>
+            <script>
+                (function() {
+                    var select = document.getElementById('deck_select');
+                    var btn = document.getElementById('add_btn');
+                    if (!select || !btn) return;
+                    function update() {
+                        var full = select.options[select.selectedIndex]?.dataset?.full === '1';
+                        if (full) {
+                            btn.textContent = 'Deck full';
+                            btn.classList.remove('btn-primary');
+                            btn.classList.add('btn-secondary');
+                            btn.setAttribute('disabled', 'disabled');
+                        } else {
+                            btn.textContent = 'Add to Deck';
+                            btn.classList.add('btn-primary');
+                            btn.classList.remove('btn-secondary');
+                            btn.removeAttribute('disabled');
+                        }
+                    }
+                    select.addEventListener('change', update);
+                    update();
+                })();
+            </script>
         </div>
     </div>
 
