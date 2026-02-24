@@ -57,7 +57,7 @@
                         </select>
                         <button id="add_btn" type="submit" class="btn btn-primary">Add to Deck</button>
                     </form>
-                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-left:8px;">View My Decks</a>
+                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="display:block;margin-top:8px;">View My Decks</a>
                 @endif
             </div>
 

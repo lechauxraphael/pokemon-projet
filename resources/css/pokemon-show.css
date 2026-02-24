@@ -8,6 +8,7 @@ body, #app, main {
     width: 100% !important;
     max-width: 100% !important;
 }
+html, body { overflow-x: hidden; }
 
 main {
     display: flex !important;
@@ -212,4 +213,18 @@ main {
         width: 100px;
         font-size: 0.85rem;
     }
+}
+
+@media (max-width: 576px) {
+    .pokemon-wrapper { padding: 20px 12px; }
+    .pokemon-image-container { width: 160px; height: 160px; }
+    .pokemon-image { width: 160px; height: 160px; }
+    .info-grid { grid-template-columns: 1fr; }
+    .deck-actions form { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 8px !important; }
+    .deck-actions select, .deck-actions .btn { width: 100%; }
+}
+
+@media (max-width: 420px) {
+    .pokemon-title { font-size: 1.6rem; }
+    .stat-name { width: 90px; }
 }

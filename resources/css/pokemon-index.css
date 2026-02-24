@@ -6,17 +6,18 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+html, body { max-width: 100%; overflow-x: hidden; }
 body { background: #f8f9fa; color: #212529; padding: 40px; }
 
 header { margin-bottom: 40px; text-align: center; }
 header h1 { font-size: 2.8rem; color: var(--secondary); margin-bottom: 10px; }
 header p { color: var(--gray); font-size: 1.1rem; }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; width: 100%; }
 .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform .2s ease, box-shadow .2s ease; text-align: center; display:flex; flex-direction:column; min-height:300px; }
 .card:hover { transform: translateY(-6px); box-shadow: 0 16px 30px rgba(0,0,0,0.12); }
 .number { color: var(--gray); font-weight: 600; font-size: .9rem; }
-.card img { width: 120px; height: 120px; margin: 10px auto; }
+.card img { width: 120px; height: 120px; margin: 10px auto; max-width: 100%; }
 .card h3 { margin: 10px 0; font-size: 1.2rem; text-transform: capitalize; color: var(--secondary); }
 .badges { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:auto; }
 .badge { padding:6px 12px; border-radius:20px; font-size:.75rem; font-weight:600; }
@@ -49,4 +50,25 @@ header p { color: var(--gray); font-size: 1.1rem; }
 
 footer { margin-top:50px; text-align:center; color:var(--gray); font-size:.9rem; }
 
-@media (max-width:600px){ body{ padding:20px; } }
+/* Responsive tweaks */
+@media (max-width: 900px){
+  header h1{ font-size: 2.2rem; }
+  .grid{ gap:18px; }
+}
+@media (max-width: 700px){
+  body{ padding: 20px; }
+  .grid{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .card img{ width: 100px; height: 100px; }
+  .search-row{ flex-direction: column; }
+  .search-input{ width: 100%; }
+  .filter-control{ width: 100%; justify-content: space-between; }
+  .filter-form{ width: 100%; }
+  .select-wrapper{ flex: 1; }
+}
+@media (max-width: 480px){
+  body{ padding: 12px; }
+  header h1{ font-size: 1.8rem; }
+  .grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:12px; }
+  .btn{ width: 100%; justify-content: center; }
+  .pagination-bar{ gap:6px; }
+}
