@@ -47,3 +47,8 @@ input[type="text"], select{padding:8px;border-radius:8px;border:1px solid #e9ece
 .modal-actions button, .modal-actions a{padding:10px 16px;border-radius:8px;border:0;cursor:pointer;flex:1}
 .modal-actions .btn-cancel{background:#e9ecef;color:#212529}
 .modal-actions .btn-confirm{background:#e63946;color:#fff}
+
+/* New wrappers */
+.deck-create{margin-top:16px;padding:12px;border:1px solid #e9ecef;border-radius:8px;background:#fff}
+.saved-deck{border:1px solid #e9ecef;border-radius:8px;padding:10px;background:#fff}
+.saved-deck__header{display:flex;align-items:center;justify-content:space-between}

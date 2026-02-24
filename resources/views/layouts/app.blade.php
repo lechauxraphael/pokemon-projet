@@ -36,9 +36,10 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-
-                        <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">View My Decks</a>
-                        <!-- Authentication Links -->
+                        @if(Auth::check())
+                            <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">View My Decks</a>
+                        @endif
+                            <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
