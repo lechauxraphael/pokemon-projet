@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="pokemon-page">
-        <h1 class="titlePage">Your Deck ({{ count(session('deck', [])) }}/6)</h1>
+        <h1 class="titlePage">My Deck(s) </h1>
         <div class="pokemon-wrapper">
             <a href="{{ route('pokemon') }}" class="back-btn">← Back to Pokédex</a>
 
@@ -61,7 +61,7 @@
                                 <div class="saved-deck__header">
                                     <div>
                                         <strong>{{ $d->name }}</strong>
-                                        <span style="color:#666;margin-left:6px">({{ $d->pokemons_count }} Pokémon)</span>
+                                        <span style="color:#666;margin-left:6px">({{ $d->items_count ?? 0 }} Pokémon)</span>
                                         <a href="{{ route('pokemon') }}" class="btn btn-secondary" style="margin-left:8px;">Choose my Pokémon</a>
                                     </div>
                                     <div style="display:flex;gap:8px;align-items:center">
@@ -80,6 +80,8 @@
                                 @if($d->pokemons->isNotEmpty())
                                     <div class="deck-list" style="margin-top:12px">
                                         @foreach($d->pokemons as $p)
+                                            @php $qty = $p->pivot->quantity ?? 1; @endphp
+                                            @for($i = 0; $i < $qty; $i++)
                                             @php
                                                 $base = preg_replace('/[^a-z0-9]+/i', '-', strtolower($p->name));
                                                 $base = trim($base, '-');
@@ -91,8 +93,14 @@
                                                 <div style="font-size:13px;color:#666">#{{ str_pad($p->pokedex_number,3,'0',STR_PAD_LEFT) }}</div>
                                                 <div style="margin-top:8px">
                                                     <a href="{{ route('pokemon.show', $p->pokedex_number) }}" class="btn btn-sm btn-outline-primary" style="margin-bottom:6px;display:inline-block">View</a>
+                                                    <form method="POST" action="{{ route('deck.remove_pokemon', $d->id) }}" style="display:inline">
+                                                        @csrf
+                                                        <input type="hidden" name="pokemon_id" value="{{ $p->id }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                                    </form>
                                                 </div>
                                             </div>
+                                            @endfor
                                         @endforeach
                                     </div>
                                 @endif

@@ -84,7 +84,7 @@ main {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    margin: 0 auto 30px auto;
+    margin: 20px auto 30px auto;
 }
 
 .pokemon-image {
@@ -194,6 +194,12 @@ main {
     font-weight: 700;
     font-size: 0.8rem;
     min-width: 30px;
+}
+
+.btn-view-my-decks{
+    display: inline-flex; 
+    gap: 8px; 
+    align-items: center;
 }
 
 @media (max-width: 768px) {

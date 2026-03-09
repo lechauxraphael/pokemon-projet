@@ -1,5 +1,4 @@
     @include('layouts.app')
-
     @section('content')
 <!DOCTYPE html>
 <html lang="fr">
@@ -19,14 +18,6 @@
 
 <div class="filters">
     <form method="GET" action="{{ route('pokemon') }}" class="filter-form" aria-label="Filtrer les Pokémon par type">
-        <!-- search by name -->
-        <div class="search-row">
-            <input type="text" name="search" placeholder="Search a Pokémon..." value="{{ request('search') }}" class="search-input">
-            @if(request('search'))
-                <a href="{{ route('pokemon', ['type' => request('type')]) }}" class="btn btn-secondary" role="button">Clear</a>
-            @endif
-        </div>
-
         <label for="type-select" class="sr-only">Filter by type</label>
         <div class="filter-control">
             <div class="select-wrapper">
@@ -42,6 +33,13 @@
 
             <button type="submit" class="btn btn-primary">Filter</button>
             <a href="{{ route('pokemon') }}" class="btn btn-secondary" role="button">Reset</a>
+        </div></br>
+                <!-- search by name -->
+        <div class="search-row">
+            <input type="text" name="search" placeholder="Search a Pokémon..." value="{{ request('search') }}" class="search-input">
+            @if(request('search'))
+                <a href="{{ route('pokemon', ['type' => request('type')]) }}" class="btn btn-secondary" role="button">Clear</a>
+            @endif
         </div>
     </form>
 </div>

@@ -6,6 +6,7 @@ use App\Models\Pokemon;
 use App\Models\Deck;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PokemonController extends Controller
 {
@@ -66,10 +67,10 @@ class PokemonController extends Controller
     public function show($pokedex_number)
     {
         $pokemon = Pokemon::where('pokedex_number', $pokedex_number)->firstOrFail();
-        $decks = Deck::where('user_id', Auth::id())
-            ->withCount('pokemons')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $decks = Deck::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        foreach ($decks as $d) {
+            $d->items_count = (int) DB::table('deck_pokemon')->where('deck_id', $d->id)->sum('quantity');
+        }
 
         $typeLabels = [
             'normal' => 'Normal',
@@ -106,9 +107,11 @@ class PokemonController extends Controller
             ->with(['pokemons' => function ($q) {
                 $q->orderBy('pokedex_number');
             }])
-            ->withCount('pokemons')
             ->orderBy('created_at', 'desc')
             ->get();
+        foreach ($decks as $d) {
+            $d->items_count = (int) DB::table('deck_pokemon')->where('deck_id', $d->id)->sum('quantity');
+        }
         return view('pokemon.deck', compact('pokemons', 'decks'));
     }
 
@@ -118,9 +121,12 @@ class PokemonController extends Controller
     public function addToDeck(Request $request, $pokedex_number)
     {
         $deck = session('deck', []);
-        if (in_array((int)$pokedex_number, $deck)) {
-            return redirect()->back()->with('status', 'This Pokémon is already in your deck.');
-        }
+            /**
+     * La fonction commentée servait à vérifier si le pokémon était déjà dans le deck
+     */
+        // if (in_array((int)$pokedex_number, $deck)) {
+        //     return redirect()->back()->with('status', 'This Pokémon is already in your deck.');
+        // }
         if (count($deck) >= 6) {
             return redirect()->back()->with('error', 'Deck is full (maximum 6 Pokémon).');
         }
@@ -189,12 +195,47 @@ class PokemonController extends Controller
             abort(403);
         }
         $pokemon = Pokemon::where('pokedex_number', $data['pokedex_number'])->firstOrFail();
-        $currentCount = $deck->pokemons()->count();
-        if ($currentCount >= 6) {
+        $currentTotal = (int) DB::table('deck_pokemon')->where('deck_id', $deck->id)->sum('quantity');
+        if ($currentTotal >= 6) {
             return redirect()->back()->with('error', 'Deck is full (maximum 6 Pokémon).');
         }
-        $deck->pokemons()->syncWithoutDetaching([$pokemon->id]);
+        $pivot = DB::table('deck_pokemon')
+            ->where('deck_id', $deck->id)
+            ->where('pokemon_id', $pokemon->id)
+            ->first();
+        if ($pivot) {
+            DB::table('deck_pokemon')
+                ->where('id', $pivot->id)
+                ->update(['quantity' => $pivot->quantity + 1, 'updated_at' => now()]);
+        } else {
+            $deck->pokemons()->attach($pokemon->id, ['quantity' => 1]);
+        }
 
         return redirect()->back()->with('status', 'Pokémon added to deck.');
+    }
+
+    public function removePokemonFromSavedDeck(Request $request, Deck $deck)
+    {
+        if ($deck->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $request->validate([
+            'pokemon_id' => 'required|integer',
+        ]);
+        $pokemonId = (int) $request->input('pokemon_id');
+        $pivot = DB::table('deck_pokemon')
+            ->where('deck_id', $deck->id)
+            ->where('pokemon_id', $pokemonId)
+            ->first();
+        if ($pivot) {
+            if ($pivot->quantity > 1) {
+                DB::table('deck_pokemon')
+                    ->where('id', $pivot->id)
+                    ->update(['quantity' => $pivot->quantity - 1, 'updated_at' => now()]);
+            } else {
+                $deck->pokemons()->detach($pokemonId);
+            }
+        }
+        return redirect()->back()->with('status', 'Pokémon removed from deck.');
     }
 }

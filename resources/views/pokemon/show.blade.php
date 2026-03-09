@@ -43,21 +43,21 @@
 
             <div class="deck-actions" style="margin:8px 0;">
                 @if(($decks ?? collect())->isEmpty())
-                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">Create Deck</a>
+                    <a href="{{ route('deck') }}" class="btn-btn-secondary" style="margin-right:8px;">Create Deck</a>
                 @else
                     <form method="POST" action="{{ route('deck.add_pokemon') }}" style="display:inline-flex; gap:8px; align-items:center;">
                         @csrf
                         <input type="hidden" name="pokedex_number" value="{{ $pokemon->pokedex_number }}">
                         <select id="deck_select" name="deck_id" required style="padding:8px 10px; border:1px solid #e9ecef; border-radius:6px;">
                             @foreach($decks as $d)
-                                <option value="{{ $d->id }}" data-full="{{ $d->pokemons_count >= 6 ? 1 : 0 }}">
-                                    {{ $d->name }}{{ $d->pokemons_count >= 6 ? ' (full)' : '' }}
+                                <option value="{{ $d->id }}" data-full="{{ ($d->items_count ?? 0) >= 6 ? 1 : 0 }}">
+                                    {{ $d->name }}{{ ($d->items_count ?? 0) >= 6 ? ' (full)' : '' }}
                                 </option>
                             @endforeach
                         </select>
                         <button id="add_btn" type="submit" class="btn btn-primary">Add to Deck</button>
                     </form>
-                    <a href="{{ route('deck') }}" class="btn btn-secondary" style="display:block;margin-top:8px;">View My Decks</a>
+                    <a href="{{ route('deck') }}" class="btn-view_my-decks" style="display:block;margin-top:8px;">View My Decks</a>
                 @endif
             </div>
 
