@@ -67,10 +67,12 @@ class PokemonController extends Controller
     public function show($pokedex_number)
     {
         $pokemon = Pokemon::where('pokedex_number', $pokedex_number)->firstOrFail();
+        $pokemon->loadCount('decks');
         $decks = Deck::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         foreach ($decks as $d) {
             $d->items_count = (int) DB::table('deck_pokemon')->where('deck_id', $d->id)->sum('quantity');
         }
+        $inDeckTotal = (int) DB::table('deck_pokemon')->where('pokemon_id', $pokemon->id)->sum('quantity');
 
         $typeLabels = [
             'normal' => 'Normal',
@@ -93,7 +95,7 @@ class PokemonController extends Controller
             'fairy' => 'Fairy',
         ];
 
-        return view('pokemon.show', compact('pokemon', 'typeLabels', 'decks'));
+        return view('pokemon.show', compact('pokemon', 'typeLabels', 'decks', 'inDeckTotal'));
     }
 
     /**
@@ -181,6 +183,12 @@ class PokemonController extends Controller
         }
         $deck->delete();
         return redirect()->back()->with('status', 'Deck deleted.');
+    }
+
+    public function destroyPokemon(Pokemon $pokemon)
+    {
+        $pokemon->delete();
+        return redirect()->route('pokemon')->with('success', $pokemon->name . ' has been deleted.');
     }
 
     public function addPokemonToSavedDeck(Request $request)

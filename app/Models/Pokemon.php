@@ -24,6 +24,12 @@ class Pokemon extends Model
         'weight_kg',
         'height_m',
     ];
-}
 
+    public function decks()
+    {
+        return $this->belongsToMany(Deck::class, 'deck_pokemon', 'pokemon_id', 'deck_id')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+}
 

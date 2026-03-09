@@ -165,6 +165,15 @@
                     update();
                 })();
             </script>
+                        @if (($inDeckTotal ?? 0) === 0)
+                <form action="{{ route('pokemon.destroyPokemon', $pokemon) }}" method="POST" class="inline-block">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete Pokémon</button>
+                </form>
+            @else
+                <a href="{{ route('deck') }}" class="btn btn-secondary inline-block">Remove this Pokémon from deck(s) first</a>
+            @endif
         </div>
     </div>
 

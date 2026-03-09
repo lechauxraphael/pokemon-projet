@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/deck/{deck}/delete', [App\Http\Controllers\PokemonController::class, 'destroyDeck'])->name('deck.delete');
     Route::post('/deck/add-pokemon', [App\Http\Controllers\PokemonController::class, 'addPokemonToSavedDeck'])->name('deck.add_pokemon');
     Route::post('/deck/{deck}/remove-pokemon', [App\Http\Controllers\PokemonController::class, 'removePokemonFromSavedDeck'])->name('deck.remove_pokemon');
+    Route::delete('/pokemon/{pokemon}/destroyPokemon', [App\Http\Controllers\PokemonController::class, 'destroyPokemon'])->name('pokemon.destroyPokemon');
     
     Route::get('/home', function () {
         return redirect()->route('pokemon');

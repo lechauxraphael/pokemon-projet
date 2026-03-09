@@ -1,4 +1,5 @@
     @include('layouts.app')
+    @vite(['resources/css/pokemon-index.css'])
     @section('content')
 <!DOCTYPE html>
 <html lang="fr">
@@ -6,8 +7,6 @@
     <meta charset="UTF-8">
     <title>Pokédex</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    @vite(['resources/css/pokemon-index.css'])
 </head>
 <body>
 <header>
@@ -15,7 +14,11 @@
     <p>Pokémon catalog by generation</p>
     <p>Clic on the pokemon to see its details</p>
 </header>
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 <div class="filters">
     <form method="GET" action="{{ route('pokemon') }}" class="filter-form" aria-label="Filtrer les Pokémon par type">
         <label for="type-select" class="sr-only">Filter by type</label>
@@ -82,6 +85,8 @@
                     Legendary
                 </span>
             @endif
+
+            
         </div>
     </div>
     </a>
