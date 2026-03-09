@@ -11,10 +11,10 @@
             <a href="{{ route('pokemon') }}" class="back-btn">← Back to Pokédex</a>
 
             @if(session('status'))
-                <div class="alert alert-success" style="margin-top:12px">{{ session('status') }}</div>
+                <div class="alert alert-success">{{ session('status') }}</div>
             @endif
             @if(session('error'))
-                <div class="alert alert-danger" style="margin-top:12px">{{ session('error') }}</div>
+                <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
             <div class="deck-create">
@@ -27,7 +27,7 @@
                 </form>
             </div>
 
-                <div class="deck-list" style="margin-top:12px">
+                <div class="deck-list">
                     @foreach($pokemons as $p)
                         @php
                             $base = preg_replace('/[^a-z0-9]+/i', '-', strtolower($p->name));
@@ -36,11 +36,11 @@
                         @endphp
                         <div class="deck-item">
                             <img src="{{ $candidate }}" alt="{{ $p->name }}">
-                            <div style="font-weight:600;margin-top:6px">{{ $p->name }}</div>
-                            <div style="font-size:13px;color:#666">#{{ str_pad($p->pokedex_number,3,'0',STR_PAD_LEFT) }}</div>
-                            <div style="margin-top:8px">
-                                <a href="{{ route('pokemon.show', $p->pokedex_number) }}" class="btn btn-sm btn-outline-primary" style="margin-bottom:6px;display:inline-block">View</a>
-                                <form method="POST" action="{{ route('deck.remove', $p->pokedex_number) }}" style="display:inline">
+                            <div class="deck-item-name">{{ $p->name }}</div>
+                            <div class="deck-item-number">#{{ str_pad($p->pokedex_number,3,'0',STR_PAD_LEFT) }}</div>
+                            <div class="action-row">
+                                <a href="{{ route('pokemon.show', $p->pokedex_number) }}" class="btn btn-sm btn-outline-primary mb-6 inline-block">View</a>
+                                <form method="POST" action="{{ route('deck.remove', $p->pokedex_number) }}" class="inline-block">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-danger">Remove</button>
                                 </form>
@@ -61,8 +61,8 @@
                                 <div class="saved-deck__header">
                                     <div>
                                         <strong>{{ $d->name }}</strong>
-                                        <span style="color:#666;margin-left:6px">({{ $d->items_count ?? 0 }} Pokémon)</span>
-                                        <a href="{{ route('pokemon') }}" class="btn btn-secondary" style="margin-left:8px;">Choose my Pokémon</a>
+                                        <span class="saved-deck__count">({{ $d->items_count ?? 0 }} Pokémon)</span>
+                                        <a href="{{ route('pokemon') }}" class="btn btn-secondary ml-8 inline-block">Choose my Pokémon</a>
                                     </div>
                                     <div style="display:flex;gap:8px;align-items:center">
                                         <form method="POST" action="{{ route('deck.rename', $d->id) }}" style="display:flex;gap:6px;align-items:center">
@@ -71,14 +71,14 @@
                                                    style="padding:6px 10px;border:1px solid #e9ecef;border-radius:6px;">
                                             <button type="submit" class="btn btn-secondary">Rename</button>
                                         </form>
-                                        <form method="POST" action="{{ route('deck.delete', $d->id) }}" onsubmit="return confirm('Delete this deck?');">
+                                        <form method="POST" action="{{ route('deck.delete', $d->id) }}">
                                             @csrf
                                             <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
                                     </div>
                                 </div>
                                 @if($d->pokemons->isNotEmpty())
-                                    <div class="deck-list" style="margin-top:12px">
+                                    <div class="deck-list">
                                         @foreach($d->pokemons as $p)
                                             @php $qty = $p->pivot->quantity ?? 1; @endphp
                                             @for($i = 0; $i < $qty; $i++)
@@ -89,14 +89,14 @@
                                             @endphp
                                             <div class="deck-item">
                                                 <img src="{{ $candidate }}" alt="{{ $p->name }}">
-                                                <div style="font-weight:600;margin-top:6px">{{ $p->name }}</div>
-                                                <div style="font-size:13px;color:#666">#{{ str_pad($p->pokedex_number,3,'0',STR_PAD_LEFT) }}</div>
-                                                <div style="margin-top:8px">
-                                                    <a href="{{ route('pokemon.show', $p->pokedex_number) }}" class="btn btn-sm btn-outline-primary" style="margin-bottom:6px;display:inline-block">View</a>
-                                                    <form method="POST" action="{{ route('deck.remove_pokemon', $d->id) }}" style="display:inline">
+                                                <div class="deck-item-name">{{ $p->name }}</div>
+                                                <div class="deck-item-number">#{{ str_pad($p->pokedex_number,3,'0',STR_PAD_LEFT) }}</div>
+                                                <div class="action-row">
+                                                    <a href="{{ route('pokemon.show', $p->pokedex_number) }}" class="btn btn-sm btn-outline-primary mb-6 inline-block">View</a>
+                                                    <form method="POST" action="{{ route('deck.remove_pokemon', $d->id) }}" class="inline-block">
                                                         @csrf
                                                         <input type="hidden" name="pokemon_id" value="{{ $p->id }}">
-                                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                                        <button type="submit" class="btn btn-sm btn-secondary">Remove</button>
                                                     </form>
                                                 </div>
                                             </div>

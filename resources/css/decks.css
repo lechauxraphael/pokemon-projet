@@ -14,19 +14,25 @@ body{font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helve
 .btn-secondary{background:#f1f3f5;color:#222}
 .btn-danger{background:#e63946;color:#fff}
 .btn-outline-primary{background:transparent;border:1px solid rgba(0,0,0,0.08);color:#1d3557}
-.btn-sm{padding:6px 8px;border-radius:6px;font-size:0.85rem}
+.btn-sm{  border-radius:6px;font-size:0.85rem}
 
 .pokemon-wrapper{background:var(--card-bg);box-shadow:var(--shadow);padding:20px;border-radius:var(--radius);max-width:980px;margin:16px auto;width:100%}
 .titlePage{font-size:1.6rem;margin-bottom:6px;color:#2b2b2b}
 .back-btn{color:#555;text-decoration:none;margin-bottom:8px;display:inline-block}
 
 .deck-list{display:flex;flex-wrap:wrap;gap:12px}
-.deck-item{width:150px;background:var(--card-bg);border-radius:10px;padding:10px;box-shadow:var(--shadow);text-align:center}
+.deck-list{margin-top:12px}
+.deck-item{width:143px;background:var(--card-bg);border-radius:10px;padding:10px;box-shadow:var(--shadow);text-align:center}
 .deck-item img{width:96px;height:96px;object-fit:contain}
+.deck-item-name{font-weight:600;margin-top:6px}
+.deck-item-number{font-size:13px;color:#666}
+.action-row{margin-top:8px}
+.saved-deck__count{color:#666;margin-left:6px}
 
 .alert{padding:10px 12px;border-radius:8px}
 .alert-success{background:#e6fffa;color:#064e3b}
 .alert-danger{background:#fff1f2;color:#9b1c1c}
+.alert{margin-top:12px}
 
 input[type="text"], select{padding:8px;border-radius:8px;border:1px solid #e9ecef}
 

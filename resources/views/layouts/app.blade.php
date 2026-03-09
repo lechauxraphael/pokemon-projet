@@ -14,7 +14,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/util.css'])
     @stack('head')
 </head>
 <body>
@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/pokemon') }}">
-                    <img src="{{ asset('images/logo-ronflex.jpg') }}" alt="Logo" style="height:28px;width:auto;margin-right:8px;vertical-align:middle;">
+                    <img src="{{ asset('images/logo-ronflex.jpg') }}" alt="Logo" class="brand-logo">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -38,7 +38,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @if(Auth::check())
-                            <a href="{{ route('deck') }}" class="btn btn-secondary" style="margin-right:8px;">View My Decks</a>
+                            <a href="{{ route('deck') }}" class="btn btn-secondary mr-8">View My Decks</a>
                         @endif
                             <!-- Authentication Links -->
                         @guest

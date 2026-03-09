@@ -12,10 +12,10 @@
             <a href="{{ route('pokemon') }}" class="back-btn">← Back to Pokédex</a>
 
             @if(session('status'))
-                <div class="alert alert-success" style="margin-top:12px">{{ session('status') }}</div>
+                <div class="alert alert-success mt-12">{{ session('status') }}</div>
             @endif
             @if(session('error'))
-                <div class="alert alert-danger" style="margin-top:12px">{{ session('error') }}</div>
+                <div class="alert alert-danger mt-12">{{ session('error') }}</div>
             @endif
 
             @php
@@ -41,14 +41,14 @@
             <h1 class="pokemon-title">{{ $pokemon->name }}</h1>
             <div class="pokemon-number">Number #{{ str_pad($pokemon->pokedex_number, 3, '0', STR_PAD_LEFT) }}</div>
 
-            <div class="deck-actions" style="margin:8px 0;">
+            <div class="deck-actions">
                 @if(($decks ?? collect())->isEmpty())
-                    <a href="{{ route('deck') }}" class="btn-btn-secondary" style="margin-right:8px;">Create Deck</a>
+                    <a href="{{ route('deck') }}" class="btn-btn-secondary mr-8">Create Deck</a>
                 @else
                     <form method="POST" action="{{ route('deck.add_pokemon') }}" style="display:inline-flex; gap:8px; align-items:center;">
                         @csrf
                         <input type="hidden" name="pokedex_number" value="{{ $pokemon->pokedex_number }}">
-                        <select id="deck_select" name="deck_id" required style="padding:8px 10px; border:1px solid #e9ecef; border-radius:6px;">
+                        <select id="deck_select" name="deck_id" required class="simple-select">
                             @foreach($decks as $d)
                                 <option value="{{ $d->id }}" data-full="{{ ($d->items_count ?? 0) >= 6 ? 1 : 0 }}">
                                     {{ $d->name }}{{ ($d->items_count ?? 0) >= 6 ? ' (full)' : '' }}
@@ -57,7 +57,7 @@
                         </select>
                         <button id="add_btn" type="submit" class="btn btn-primary">Add to Deck</button>
                     </form>
-                    <a href="{{ route('deck') }}" class="btn-view_my-decks" style="display:block;margin-top:8px;">View My Decks</a>
+                    <a href="{{ route('deck') }}" class="btn btn-secondary block mt-8">View My Decks</a>
                 @endif
             </div>
 
